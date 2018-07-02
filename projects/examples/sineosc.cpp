@@ -26,7 +26,17 @@ int main()
     exit( 1 );
   }
 
-  input.setFrequency( 440.0 );
+  
+    // 计算规则
+    //     100000/44100 = 2.27
+    //     setFrequency 441(每秒次数)
+    //         44频率变低,一个frames
+    //         4400频率变高
+    //             是什么啊？resample吗？
+    //         是的，input是44个frames,对应的output调用的是100000次，每秒44100次，所以，对应的是input的44 * frames，所以设置 input的frequecy决定，正弦函数的波动次数
+    //
+    //             input frames
+    input.setFrequency( 44.0 );
 
   // Option 1: Use StkFrames
   /*
@@ -41,8 +51,10 @@ int main()
 
   // Option 2: Single-sample computations
   for ( int i=0; i<nFrames; i++ ) {
+    printf("\ntry version 1.3 \n");
     try {
       output.tick( input.tick() );
+        // 有符号位16bit
     }
     catch ( StkError & ) {
       exit( 1 );
